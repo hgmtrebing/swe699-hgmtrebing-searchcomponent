@@ -67,7 +67,9 @@
 		</dependencies>
 	</dependencyManagement>
 
+	<packaging>jar</packaging>
 	<build>
+        <finalName>swe699-hgmtrebing</finalName>
 		<plugins>
 			<plugin>
 				<groupId>org.springframework.boot</groupId>
