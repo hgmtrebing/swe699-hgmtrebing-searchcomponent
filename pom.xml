@@ -28,6 +28,8 @@
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-web</artifactId>
 		</dependency>
+		<!-- Temporarily remove so that we can run locally - apparently AWS dependencies need special configuration to run outside of EC2 -->
+		<!--
 		<dependency>
 			<groupId>org.springframework.cloud</groupId>
 			<artifactId>spring-cloud-starter-aws</artifactId>
@@ -36,6 +38,7 @@
 			<groupId>org.springframework.cloud</groupId>
 			<artifactId>spring-cloud-starter-aws-jdbc</artifactId>
 		</dependency>
+		-->
 
 		<dependency>
 			<groupId>org.projectlombok</groupId>
