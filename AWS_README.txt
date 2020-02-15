@@ -10,5 +10,8 @@ Setup Code Build
     - https://docs.aws.amazon.com/codebuild/latest/userguide/getting-started.html
     - https://docs.aws.amazon.com/codebuild/latest/userguide/getting-started-create-build-spec-console.html
 
-Setup Code Deploy
-    - https://docs.aws.amazon.com/codedeploy/latest/userguide/getting-started-codedeploy.html
+Exposing Multiple Ports on Spring Boot
+    https://tech.asimio.net/2016/12/15/Configuring-Tomcat-to-Listen-on-Multiple-ports-using-Spring-Boot.html
+    https://petervarga.org/2019/03/13/define-multiple-ports-for-spring-boot-application/
+    https://docs.spring.io/spring-boot/docs/1.2.3.RELEASE/reference/html/howto-embedded-servlet-containers.html
+    https://tomcat.apache.org/tomcat-8.5-doc/api/org/apache/catalina/connector/Connector.html
