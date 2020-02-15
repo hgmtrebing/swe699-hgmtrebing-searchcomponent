@@ -8,3 +8,7 @@ Setup Code Commit
 
 Setup Code Build
     - https://docs.aws.amazon.com/codebuild/latest/userguide/getting-started.html
+    - https://docs.aws.amazon.com/codebuild/latest/userguide/getting-started-create-build-spec-console.html
+
+Setup Code Deploy
+    - https://docs.aws.amazon.com/codedeploy/latest/userguide/getting-started-codedeploy.html
