@@ -15,3 +15,6 @@ Exposing Multiple Ports on Spring Boot
     https://petervarga.org/2019/03/13/define-multiple-ports-for-spring-boot-application/
     https://docs.spring.io/spring-boot/docs/1.2.3.RELEASE/reference/html/howto-embedded-servlet-containers.html
     https://tomcat.apache.org/tomcat-8.5-doc/api/org/apache/catalina/connector/Connector.html
+
+Connecting Spring Boot to DynamoDB (or other Databases)
+    https://www.baeldung.com/spring-data-dynamodb
