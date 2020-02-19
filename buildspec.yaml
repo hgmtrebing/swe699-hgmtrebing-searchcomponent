@@ -11,10 +11,10 @@ phases:
     commands:
       - echo Build started on `date`
       - mvn install
-      - tar cvf build.tar target/swe699-hgmtrebing.jar
+      - tar cvf revision.tar */*
   post_build:
     commands:
       - echo Build completed on `date`
 artifacts:
   files:
-    - '**/*'
+    - revision.tar
