@@ -17,5 +17,4 @@ phases:
       - echo Build completed on `date`
 artifacts:
   files:
-    - target/swe699-hgmtrebing.jar
-    - build.tar
+    - '**/*'
