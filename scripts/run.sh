@@ -1,1 +1,1 @@
-java -jar swe699-hgmtrebing.jar
+java -jar target/swe699-hgmtrebing.jar
