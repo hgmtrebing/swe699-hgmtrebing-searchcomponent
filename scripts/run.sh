@@ -1,2 +1,1 @@
-echo | pwd
-java -jar /target/swe699-hgmtrebing.jar
+nohup java -jar /target/swe699-hgmtrebing.jar &
