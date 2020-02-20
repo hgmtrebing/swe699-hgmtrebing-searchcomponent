@@ -1,0 +1,11 @@
+version: 0.0
+os: linux
+
+files:
+  - source: target/swe699-hgmtrebing.jar
+    destination: /target
+
+hooks:
+  ApplicationStart:
+    - location: scripts/run.sh
+      timeout: 120
