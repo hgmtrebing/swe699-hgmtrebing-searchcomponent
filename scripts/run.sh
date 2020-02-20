@@ -1,2 +1,2 @@
 echo | pwd
-java -jar target/swe699-hgmtrebing.jar
+java -jar /tmp/codedeploy-deployment-staging-area/target/swe699-hgmtrebing.jar
