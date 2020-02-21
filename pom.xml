@@ -68,6 +68,7 @@
 		</dependency>
 	</dependencies>
 
+	<!--
 	<dependencyManagement>
 		<dependencies>
 			<dependency>
@@ -86,6 +87,7 @@
 			</dependency>
 		</dependencies>
 	</dependencyManagement>
+	-->
 
 	<!--Custom repository:-->
 	<repositories>
