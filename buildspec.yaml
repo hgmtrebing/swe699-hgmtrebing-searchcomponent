@@ -11,10 +11,10 @@ phases:
     commands:
       - echo Build started on `date`
       - mvn install
-      - tar cvf revision.tar *
+#      - tar cvf revision.tar *
   post_build:
     commands:
       - echo Build completed on `date`
-artifacts:
-  files:
-    - revision.tar
+#artifacts:
+#  files:
+#    - revision.tar
