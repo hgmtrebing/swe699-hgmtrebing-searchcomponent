@@ -12,10 +12,15 @@
 </head>
 <body>
     <div class="container-lg mt-5">
-        <h1>Results for your search: <span th:text="${textSearch}"></span></h1>
+        <h1>Results for your search: &ldquo;<span th:text="${results.request.textSearchInput}"></span>&rdquo; near Zip Code <span th:text="${results.request.zipCode}"</h1>
+        <div class="list-group">
+
+        </div>
+        <!--
         <ul>
             <li th:each="result: ${results}"><span th:text="${result}"></span></li>
         </ul>
+        -->
     </div>
 </body>
 </html>
