@@ -7,7 +7,7 @@ files:
 
 hooks:
   ApplicationStart:
-    - location: scripts/prepare.sh
-      timeout: 60
+#    - location: scripts/prepare.sh
+#      timeout: 60
     - location: scripts/run.sh
       timeout: 120
