@@ -6,10 +6,8 @@ files:
     destination: /target/
 
 hooks:
-  ApplicationStop:
+  ApplicationStart:
     - location: scripts/prepare.sh
       timeout: 60
-
-  ApplicationStart:
     - location: scripts/run.sh
       timeout: 120
