@@ -1,9 +1,8 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>Order Out!</title>
-
+    <title>Search Results</title>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
     <script src="https://code.jquery.com/jquery-3.4.1.js" integrity="sha256-WpOohJOqMqqyKL9FccASB9O0KwACQJpFTUBLTYOVvVU="  crossorigin="anonymous"></script>
     <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
@@ -12,18 +11,11 @@
     <link rel="stylesheet" href="index.css" type="text/css">
 </head>
 <body>
-    <div class="container-md">
-        <h1 id="search-page-main-title">Welcome to Order Out!</h1>
-        <h2>Let us help you search for your next meal!</h2>
-
-
-        <form class="form-inline" action="/restaurant_search">
-            <div class="form-group mt-5">
-               <label for="restaurant-text-search">Hungry? Get started here:</label>
-                <input id="restaurant-text-search" name="text-search" class="form-control form-control-lg ml-3" type="text" placeholder="Search for Restaurants">
-                <button type="submit" class="btn btn-primary ml-1 form-control-lg">Go!</button>
-            </div>
-        </form>
+    <div class="container-lg mt-5">
+        <h1>Results for your search: <span th:text="${textSearch}"></span></h1>
+        <ul>
+            <li th:each="result: ${results}"><span th:text="${result}"></span></li>
+        </ul>
     </div>
 </body>
 </html>
