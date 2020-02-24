@@ -10,11 +10,27 @@ import java.util.ArrayList;
 public class SearchEngine {
 
     public SearchResults getSearchResults(SearchRequest request) {
-        return getDummyData(request);
+        SearchResults tempResults = getDummyData(request);
+        SearchResults newResults = new SearchResults();
+        newResults.setRequest(request);
+        for (IndividualRestaurantSearchResult result : tempResults) {
+            if (result.getName().equalsIgnoreCase(request.getTextSearchInput())) {
+                newResults.addSearchResult(result);
+            }
+        }
+
+        if (newResults.getNumberOfSearchResults() > 0) {
+            newResults.setResultsType(ResultsType.SUCCESSFUL_SEARCH_RESULTS);
+            return newResults;
+        } else {
+            newResults = getBrowseResults(request);
+            newResults.setResultsType(ResultsType.FAILED_SEARCH_RESULTS);
+            return newResults;
+        }
     }
 
-    public SearchResults getBrowseResults (BrowseRequest request) {
-        SearchResults results = new SearchResults();
+    public SearchResults getBrowseResults (SearchRequest request) {
+        SearchResults results = getDummyData(request);
 
         return results;
     }
@@ -49,27 +65,28 @@ public class SearchEngine {
         arigato.setZipCode(22030);
 
         IndividualRestaurantSearchResult bombay = new IndividualRestaurantSearchResult();
-        arigato.setName("Bombay Cafe");
-        arigato.setPrice(Pricing.ONE_STAR);
-        arigato.addCuisine(Cuisine.CASUAL);
-        arigato.addCuisine(Cuisine.SIT_DOWN);
-        arigato.addCuisine(Cuisine.INDIAN);
-        arigato.addCuisine(Cuisine.ASIAN);
-        arigato.setStreetAddress("11213 Lee Hwy E");
-        arigato.setCity("Fairfax");
-        arigato.setState(State.VIRGINIA);
+        bombay.setName("Bombay Cafe");
+        bombay.setPrice(Pricing.ONE_STAR);
+        bombay.addCuisine(Cuisine.CASUAL);
+        bombay.addCuisine(Cuisine.SIT_DOWN);
+        bombay.addCuisine(Cuisine.INDIAN);
+        bombay.addCuisine(Cuisine.ASIAN);
+        bombay.setStreetAddress("11213 Lee Hwy E");
+        bombay.setCity("Fairfax");
+        bombay.setState(State.VIRGINIA);
+        bombay.setZipCode(22030);
 
         IndividualRestaurantSearchResult bww = new IndividualRestaurantSearchResult();
-        arigato.setName("Buffalo Wild Wings");
-        arigato.setPrice(Pricing.TWO_STAR);
-        arigato.addCuisine(Cuisine.CASUAL);
-        arigato.addCuisine(Cuisine.SIT_DOWN);
-        arigato.addCuisine(Cuisine.GENERAL_AMERICAN);
-        arigato.addCuisine(Cuisine.HAPPY_HOUR_FOOD);
-        arigato.addCuisine(Cuisine.BAR_FOOD);
-        arigato.setStreetAddress("11204 James Swart Cir");
-        arigato.setCity("Fairfax");
-        arigato.setState(State.VIRGINIA);
+        bww.setName("Buffalo Wild Wings");
+        bww.setPrice(Pricing.TWO_STAR);
+        bww.addCuisine(Cuisine.CASUAL);
+        bww.addCuisine(Cuisine.SIT_DOWN);
+        bww.addCuisine(Cuisine.GENERAL_AMERICAN); arigato.addCuisine(Cuisine.HAPPY_HOUR_FOOD);
+        bww.addCuisine(Cuisine.BAR_FOOD);
+        bww.setStreetAddress("11204 James Swart Cir");
+        bww.setCity("Fairfax");
+        bww.setState(State.VIRGINIA);
+        bww.setZipCode(22030);
 
         results.addSearchResult(chuys);
         results.addSearchResult(arigato);
@@ -77,5 +94,16 @@ public class SearchEngine {
         results.addSearchResult(bww);
 
         return results;
+    }
+
+    public static void main(String[] args) {
+        SearchResults results = new SearchEngine().getDummyData(new SearchRequest());
+        System.out.println(results.getResultAt(0).getName());
+        System.out.println(results.getResultAt(1).getName());
+        System.out.println(results.getResultAt(2).getName());
+        System.out.println(results.getResultAt(3).getName());
+        for (IndividualRestaurantSearchResult result : new SearchEngine().getDummyData(new SearchRequest())) {
+            System.out.println(result.getName());
+        }
     }
 }

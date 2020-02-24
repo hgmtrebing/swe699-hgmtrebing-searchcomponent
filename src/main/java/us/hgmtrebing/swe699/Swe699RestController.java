@@ -40,6 +40,7 @@ public class Swe699RestController {
 
         SearchEngine engine = new SearchEngine();
         SearchResults results = engine.getSearchResults(request);
+        System.out.println(results.getResultsType());
 
         /*
         String[] cuisines = cuisine.split(",");
