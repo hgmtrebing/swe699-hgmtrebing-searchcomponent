@@ -40,7 +40,7 @@ public class MysqlConnector {
 
     public void initializeDatabaseSchema() {
         try {
-            String createTableString = "CREATE TABLE restaurants " +
+            String createTableString = "CREATE TABLE IF NOT EXISTS restaurants " +
                     "(col_restaurant_id INTEGER NOT NULL, " +
                     "col_restaurant_public_id INTEGER NOT NULL, " +
                     "col_restaurant_name VARCHAR(255) NOT NULL, " +
@@ -50,9 +50,8 @@ public class MysqlConnector {
                     "col_restaurant_zip INTEGER NOT NULL, " +
                     "PRIMARY KEY ( col_restaurant_id ))";
             PreparedStatement createTableStatement = this.connection.prepareStatement(createTableString);
-
             createTableStatement.executeUpdate();
-
+            log.info("Database schema successfully initialized on {}.", this.connectionUrl);
         } catch (Exception e) {
             log.error("Error occurred while trying to initialize Database Schema: {}", e.toString());
         }
@@ -61,6 +60,7 @@ public class MysqlConnector {
     public void closeConnection() {
         try {
             this.connection.close();
+            log.info("Connection successfully closed to {}.", this.connectionUrl);
         } catch (Exception e) {
             log.error("Error occurred while trying to close database connection: {} ", e.toString());
         }
