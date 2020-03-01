@@ -21,9 +21,9 @@ public class SearchRequest {
 
     public SearchRequest () {
         this.searchType = SearchType.UNKNOWN;
-        this.textSearchInput = "";
-        this.streetAddress = "";
-        this.city = "";
+        this.textSearchInput = null;
+        this.streetAddress = null;
+        this.city = null;
         this.state = State.NONE;
         this.zipCode = 00000;
     }

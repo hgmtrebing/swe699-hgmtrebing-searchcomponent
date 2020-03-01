@@ -2,14 +2,15 @@ package us.hgmtrebing.swe699.search;
 
 import lombok.Getter;
 import lombok.Setter;
+import us.hgmtrebing.swe699.database.hibernate.Restaurant;
 
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
-public class Results implements Iterable<IndividualRestaurantSearchResult>{
+public class Results implements Iterable<Restaurant>{
 
-    private List<IndividualRestaurantSearchResult> results;
+    private List<Restaurant> results;
 
     @Getter @Setter
     private ResultsType resultsType;
@@ -34,7 +35,7 @@ public class Results implements Iterable<IndividualRestaurantSearchResult>{
 
 
     }
-    public void addSearchResult(IndividualRestaurantSearchResult result) {
+    public void addSearchResult(Restaurant result) {
         this.results.add(result);
     }
 
@@ -46,13 +47,13 @@ public class Results implements Iterable<IndividualRestaurantSearchResult>{
 
     public void switchResults(int index1, int index2) {
         if (index1 < this.results.size() && index2 < this.results.size()) {
-            IndividualRestaurantSearchResult a = this.results.get(index1);
+            Restaurant a = this.results.get(index1);
             this.results.set(index1, this.results.get(index2));
             this.results.set(index2, a);
         }
     }
 
-    public IndividualRestaurantSearchResult getResultAt(int index) {
+    public Restaurant getResultAt(int index) {
         if(index < this.results.size()) {
             return results.get(index);
         } else {
@@ -65,8 +66,8 @@ public class Results implements Iterable<IndividualRestaurantSearchResult>{
     }
 
     @Override
-    public Iterator<IndividualRestaurantSearchResult> iterator() {
-        return new Iterator<IndividualRestaurantSearchResult>() {
+    public Iterator<Restaurant> iterator() {
+        return new Iterator<Restaurant>() {
             private int location = 0;
             private int size = results.size();
             private boolean stateViolated = false;
@@ -88,7 +89,7 @@ public class Results implements Iterable<IndividualRestaurantSearchResult>{
             }
 
             @Override
-            public IndividualRestaurantSearchResult next() {
+            public Restaurant next() {
                 checkState();
                 if (this.hasNext()) {
                    return results.get(this.location++);

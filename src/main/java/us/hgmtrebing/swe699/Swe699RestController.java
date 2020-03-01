@@ -38,23 +38,15 @@ public class Swe699RestController {
         request.setState(state);
         request.setZipCode(Integer.parseInt(zipCode));
 
+        /*
         SearchEngine engine = new SearchEngine();
         SearchResults results = engine.getSearchResults(request);
         System.out.println(results.getResultsType());
 
-        /*
-        String[] cuisines = cuisine.split(",");
-        for (String possibleCuisine : cuisines) {
-            Cuisine parsedCuisine = Cuisine.parseFromString(possibleCuisine);
-            if (parsedCuisine != null) {
-                request.addCuisine(parsedCuisine);
-            } else {
-                log.warn("Invalid Cuisine received while processing search request {}", possibleCuisine);
-            }
-        }
-         */
 
         model.addAttribute("results", results);
+
+         */
         return "search_results";
     }
 }

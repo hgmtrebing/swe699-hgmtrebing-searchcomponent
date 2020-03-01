@@ -10,9 +10,9 @@ import java.sql.PreparedStatement;
 public class MysqlUtil {
     private static final Logger log = LoggerFactory.getLogger(MysqlUtil.class);
 
-    private String username = "swe699_user01";
-    private String password = "password";
-    private String connectionUrl = "jdbc:mysql://localhost:3306/swe699_02";
+    private String username = "swe699_user02";
+    private String password = "password01";
+    private String connectionUrl = "jdbc:mysql://ec2-52-91-109-149.compute-1.amazonaws.com:3306/swe699_01";
     private String driver = "com.mysql.cj.jdbc.Driver";
 
     public static final String associationTableName = "tbl_restaurant_cuisine_association";
