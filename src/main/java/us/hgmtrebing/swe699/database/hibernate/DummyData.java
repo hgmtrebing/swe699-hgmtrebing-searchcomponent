@@ -4,11 +4,11 @@ import us.hgmtrebing.swe699.search.SearchRequest;
 
 public class DummyData {
     public static void populateWithDummyData() {
-        MysqlUtil initializer = null;
+        MysqlConnection initializer = null;
         try {
-            initializer = new MysqlUtil();
+            initializer = new MysqlConnection();
             initializer.connect();
-            initializer.initializeDatabaseSchema(true);
+            initializer.initializeDatabaseSchema(false);
 
 
             Cuisine c01 = new Cuisine();
@@ -92,6 +92,9 @@ public class DummyData {
         HibernateConnection connection = new HibernateConnection();
         connection.connect();
         SearchRequest request = new SearchRequest();
+        request.setTextSearchInput("Artie's");
+        request.setStreetAddress("3260 Old Lee Hwy");
+        request.setCity("Fairfax");
 
         for (Restaurant restaurant : connection.search(request)) {
             System.out.println(restaurant.getName());

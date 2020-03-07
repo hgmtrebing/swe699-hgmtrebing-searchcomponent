@@ -80,9 +80,9 @@ public class Restaurant {
     @Getter
     @Setter
     @ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
-    @JoinTable(name = MysqlUtil.associationTableName, joinColumns = {
-            @JoinColumn(name = MysqlUtil.associationRestaurantIdName , nullable = false, updatable = false) },
-            inverseJoinColumns = { @JoinColumn(name = MysqlUtil.associationCuisineIdName,
+    @JoinTable(name = MysqlConnection.associationTableName, joinColumns = {
+            @JoinColumn(name = MysqlConnection.associationRestaurantIdName , nullable = false, updatable = false) },
+            inverseJoinColumns = { @JoinColumn(name = MysqlConnection.associationCuisineIdName,
                     nullable = false, updatable = false) })
     private Set<Cuisine> cuisines = new HashSet<>();
 

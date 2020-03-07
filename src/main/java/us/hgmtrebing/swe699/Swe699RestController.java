@@ -6,6 +6,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import us.hgmtrebing.swe699.database.hibernate.HibernateConnection;
 import us.hgmtrebing.swe699.model.Cuisine;
 import us.hgmtrebing.swe699.search.SearchEngine;
 import us.hgmtrebing.swe699.search.SearchRequest;
@@ -15,6 +16,14 @@ import us.hgmtrebing.swe699.search.SearchResults;
 public class Swe699RestController {
 
     Logger log = LoggerFactory.getLogger(this.getClass());
+    private HibernateConnection connection;
+
+
+    public Swe699RestController() {
+        super();
+        this.connection = new HibernateConnection();
+        this.connection.connect();
+    }
 
     @RequestMapping("/test")
     public String test() {
@@ -38,15 +47,13 @@ public class Swe699RestController {
         request.setState(state);
         request.setZipCode(Integer.parseInt(zipCode));
 
-        /*
-        SearchEngine engine = new SearchEngine();
+        SearchEngine engine = new SearchEngine(this.connection);
         SearchResults results = engine.getSearchResults(request);
         System.out.println(results.getResultsType());
 
 
         model.addAttribute("results", results);
 
-         */
         return "search_results";
     }
 }

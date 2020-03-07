@@ -7,8 +7,8 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 
-public class MysqlUtil {
-    private static final Logger log = LoggerFactory.getLogger(MysqlUtil.class);
+public class MysqlConnection {
+    private static final Logger log = LoggerFactory.getLogger(MysqlConnection.class);
 
     private String username = "swe699_user02";
     private String password = "password01";
@@ -24,7 +24,7 @@ public class MysqlUtil {
     private Connection connection;
 
     public static void main (String[] args) {
-        MysqlUtil connector = new MysqlUtil();
+        MysqlConnection connector = new MysqlConnection();
         connector.connect();
         connector.initializeDatabaseSchema(true);
         connector.closeConnection();
@@ -43,7 +43,7 @@ public class MysqlUtil {
     public void initializeDatabaseSchema(boolean reinitialize) {
         try {
             if (reinitialize) {
-                String drop01 = "DROP TABLE IF EXISTS " + MysqlUtil.associationTableName;
+                String drop01 = "DROP TABLE IF EXISTS " + MysqlConnection.associationTableName;
                 PreparedStatement dropTableStatement = this.connection.prepareStatement(drop01);
                 dropTableStatement.executeUpdate();
 
@@ -80,15 +80,15 @@ public class MysqlUtil {
             createTableStatement = this.connection.prepareStatement(createCuisineTableString);
             createTableStatement.executeUpdate();
 
-            String createRestaurantCuisineTable = "CREATE TABLE IF NOT EXISTS " + MysqlUtil.associationTableName + "(" +
-                    MysqlUtil.associationIdName + " INTEGER NOT NULL AUTO_INCREMENT, " +
-                    MysqlUtil.associationRestaurantIdName + " INTEGER NOT NULL, " +
-                    MysqlUtil.associationCuisineIdName + " INTEGER NOT NULL, " +
-                    "PRIMARY KEY ( " + MysqlUtil.associationIdName +" ), " +
-                    "INDEX ("+MysqlUtil.associationRestaurantIdName+"), " +
-                    "INDEX ("+MysqlUtil.associationCuisineIdName+"), " +
-                    "FOREIGN KEY ("+MysqlUtil.associationRestaurantIdName+") REFERENCES "+Restaurant.restaurantTableName+"("+Restaurant.restaurantIdName+") ON DELETE CASCADE ON UPDATE CASCADE," +
-                    "FOREIGN KEY ("+MysqlUtil.associationRestaurantIdName+") REFERENCES "+Cuisine.cuisineTableName+"("+Cuisine.cuisineColIdName+") ON DELETE CASCADE ON UPDATE CASCADE)";
+            String createRestaurantCuisineTable = "CREATE TABLE IF NOT EXISTS " + MysqlConnection.associationTableName + "(" +
+                    MysqlConnection.associationIdName + " INTEGER NOT NULL AUTO_INCREMENT, " +
+                    MysqlConnection.associationRestaurantIdName + " INTEGER NOT NULL, " +
+                    MysqlConnection.associationCuisineIdName + " INTEGER NOT NULL, " +
+                    "PRIMARY KEY ( " + MysqlConnection.associationIdName +" ), " +
+                    "INDEX ("+ MysqlConnection.associationRestaurantIdName+"), " +
+                    "INDEX ("+ MysqlConnection.associationCuisineIdName+"), " +
+                    "FOREIGN KEY ("+ MysqlConnection.associationRestaurantIdName+") REFERENCES "+Restaurant.restaurantTableName+"("+Restaurant.restaurantIdName+") ON DELETE CASCADE ON UPDATE CASCADE," +
+                    "FOREIGN KEY ("+ MysqlConnection.associationRestaurantIdName+") REFERENCES "+Cuisine.cuisineTableName+"("+Cuisine.cuisineColIdName+") ON DELETE CASCADE ON UPDATE CASCADE)";
             createTableStatement = this.connection.prepareStatement(createRestaurantCuisineTable);
             createTableStatement.executeUpdate();
 

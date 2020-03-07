@@ -10,6 +10,7 @@ import us.hgmtrebing.swe699.search.ResultsType;
 import us.hgmtrebing.swe699.search.SearchRequest;
 import us.hgmtrebing.swe699.search.SearchResults;
 
+import javax.persistence.Query;
 import javax.persistence.criteria.CriteriaBuilder;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Predicate;
@@ -89,6 +90,7 @@ public class HibernateConnection {
     public SearchResults search(SearchRequest request) {
         try {
             this.session.beginTransaction();
+            /*
             CriteriaBuilder cb = this.session.getCriteriaBuilder();
             CriteriaQuery<Restaurant> cq = cb.createQuery(Restaurant.class);
             Root<Restaurant> root = cq.from(Restaurant.class);
@@ -107,10 +109,58 @@ public class HibernateConnection {
                 cq.select(root).where(predicates1);
             }
             List<Restaurant> restaurants = session.createQuery(cq).getResultList();
+             */
 
+            String queryString = "from Restaurant as restaurant";
+            boolean whereInserted = false;
+
+            if (request.getTextSearchInput() != null) {
+                if (whereInserted) {
+                    queryString += " and name like :restaurantName";
+                } else {
+                    queryString += " where name like :restaurantName";
+                    whereInserted = true;
+                }
+            }
+
+            if (request.getStreetAddress() != null) {
+                if (whereInserted) {
+                    queryString += " and streetAddress = :restaurantStreet";
+                } else {
+                    queryString += " where streetAddress = :restaurantStreet";
+                    whereInserted = true;
+                }
+            }
+
+            if (request.getCity() != null) {
+                if (whereInserted) {
+                    queryString += " and city = :restaurantCity";
+                } else {
+                    queryString += " where city = :restaurantCity";
+                    whereInserted = true;
+                }
+            }
+
+            Query query = session.createQuery(queryString);
+
+            if (request.getTextSearchInput() != null) {
+                query.setParameter("restaurantName", "%"+request.getTextSearchInput()+"%");
+            }
+
+            if (request.getStreetAddress() != null) {
+                query.setParameter("restaurantStreet", request.getStreetAddress());
+            }
+
+            if (request.getCity() != null) {
+                query.setParameter("restaurantCity", request.getCity());
+            }
+
+            List restaurants = query.getResultList();
+
+            session.getTransaction().commit();
             SearchResults results = new SearchResults();
-            for (Restaurant restaurant : restaurants) {
-                results.addSearchResult(restaurant);
+            for (Object restaurant : restaurants) {
+                results.addSearchResult((Restaurant) restaurant);
             }
             results.setRequest(request);
             return results;
