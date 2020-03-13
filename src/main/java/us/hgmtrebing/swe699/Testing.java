@@ -1,13 +1,11 @@
 package us.hgmtrebing.swe699;
 
-import com.amazonaws.services.dynamodbv2.xspec.M;
 import org.springframework.boot.json.JsonParser;
 import org.springframework.boot.json.JsonParserFactory;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.client.RestTemplate;
-import us.hgmtrebing.swe699.database.hibernate.HibernateConnection;
+import us.hgmtrebing.swe699.database.HibernateConnection;
 
-import java.util.List;
 import java.util.Map;
 
 public class Testing {

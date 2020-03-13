@@ -1,6 +1,10 @@
-package us.hgmtrebing.swe699.database.hibernate;
+package us.hgmtrebing.swe699.database;
 
-import us.hgmtrebing.swe699.search.SearchRequest;
+import us.hgmtrebing.swe699.model.Cuisine;
+import us.hgmtrebing.swe699.model.Pricing;
+import us.hgmtrebing.swe699.model.Restaurant;
+import us.hgmtrebing.swe699.model.State;
+import us.hgmtrebing.swe699.search.RestaurantSearchRequest;
 
 public class DummyData {
     public static void populateWithDummyData() {
@@ -91,7 +95,7 @@ public class DummyData {
         DummyData.populateWithDummyData();
         HibernateConnection connection = new HibernateConnection();
         connection.connect();
-        SearchRequest request = new SearchRequest();
+        RestaurantSearchRequest request = new RestaurantSearchRequest();
         request.setTextSearchInput("Artie's");
         request.setStreetAddress("3260 Old Lee Hwy");
         request.setCity("Fairfax");

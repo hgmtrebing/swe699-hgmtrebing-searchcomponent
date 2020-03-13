@@ -2,23 +2,23 @@ package us.hgmtrebing.swe699.search;
 
 import lombok.Getter;
 import lombok.Setter;
-import us.hgmtrebing.swe699.database.hibernate.Restaurant;
+import us.hgmtrebing.swe699.model.Restaurant;
 
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
-public class Results implements Iterable<Restaurant>{
+public class RestaurantSearchResults implements Iterable<Restaurant>{
 
     private List<Restaurant> results;
 
     @Getter @Setter
-    private ResultsType resultsType;
+    private RestaurantSearchResultsType restaurantSearchResultsType;
 
     @Getter @Setter
-    private SearchRequest request;
+    private RestaurantSearchRequest request;
 
-    public Results() {
+    public RestaurantSearchResults() {
         this.results = new ArrayList<>();
     }
 

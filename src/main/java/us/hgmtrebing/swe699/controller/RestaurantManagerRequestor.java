@@ -1,11 +1,11 @@
-package us.hgmtrebing.swe699;
+package us.hgmtrebing.swe699.controller;
 
 import org.springframework.boot.json.JsonParser;
 import org.springframework.boot.json.JsonParserFactory;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.client.RestTemplate;
-import us.hgmtrebing.swe699.database.hibernate.HibernateConnection;
-import us.hgmtrebing.swe699.database.hibernate.MysqlConnection;
+import us.hgmtrebing.swe699.database.HibernateConnection;
+import us.hgmtrebing.swe699.database.MysqlConnection;
 
 import java.util.Map;
 import java.util.Timer;

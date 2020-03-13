@@ -1,7 +1,9 @@
-package us.hgmtrebing.swe699.database.hibernate;
+package us.hgmtrebing.swe699.database;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import us.hgmtrebing.swe699.model.Cuisine;
+import us.hgmtrebing.swe699.model.Restaurant;
 
 import java.sql.Connection;
 import java.sql.DriverManager;

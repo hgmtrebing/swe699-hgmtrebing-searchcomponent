@@ -1,21 +1,17 @@
-package us.hgmtrebing.swe699.database.hibernate;
+package us.hgmtrebing.swe699.database;
 
-import org.hibernate.Criteria;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.cfg.Configuration;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import us.hgmtrebing.swe699.search.ResultsType;
-import us.hgmtrebing.swe699.search.SearchRequest;
-import us.hgmtrebing.swe699.search.SearchResults;
+import us.hgmtrebing.swe699.model.Cuisine;
+import us.hgmtrebing.swe699.model.Restaurant;
+import us.hgmtrebing.swe699.search.RestaurantSearchRequest;
+import us.hgmtrebing.swe699.search.RestaurantSearchResults;
+import us.hgmtrebing.swe699.search.RestaurantSearchResultsType;
 
 import javax.persistence.Query;
-import javax.persistence.criteria.CriteriaBuilder;
-import javax.persistence.criteria.CriteriaQuery;
-import javax.persistence.criteria.Predicate;
-import javax.persistence.criteria.Root;
-import java.util.ArrayList;
 import java.util.List;
 
 public class HibernateConnection {
@@ -95,7 +91,7 @@ public class HibernateConnection {
         return cuisines;
     }
 
-    public SearchResults search(SearchRequest request) {
+    public RestaurantSearchResults search(RestaurantSearchRequest request) {
         try {
             this.session.beginTransaction();
             /*
@@ -166,7 +162,7 @@ public class HibernateConnection {
             List restaurants = query.getResultList();
 
             session.getTransaction().commit();
-            SearchResults results = new SearchResults();
+            RestaurantSearchResults results = new RestaurantSearchResults();
             for (Object restaurant : restaurants) {
                 results.addSearchResult((Restaurant) restaurant);
             }
@@ -176,9 +172,9 @@ public class HibernateConnection {
         } catch (Exception e) {
             log.warn("Error encoutered during query", e);
         }
-        SearchResults results = new SearchResults();
+        RestaurantSearchResults results = new RestaurantSearchResults();
         results.setRequest(request);
-        results.setResultsType(ResultsType.FAILED_SEARCH_RESULTS);
+        results.setRestaurantSearchResultsType(RestaurantSearchResultsType.FAILED_SEARCH_RESULTS);
         return results;
     }
 }

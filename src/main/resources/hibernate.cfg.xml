@@ -16,7 +16,7 @@
         <property name="hibernate.connection.password">password01</property>
         <property name="hibernate.dialect">org.hibernate.dialect.MySQLDialect</property>
         <property name="show_sql">true</property>
-        <mapping class="us.hgmtrebing.swe699.database.hibernate.Cuisine" />
-        <mapping class="us.hgmtrebing.swe699.database.hibernate.Restaurant" />
+        <mapping class="us.hgmtrebing.swe699.model.Cuisine" />
+        <mapping class="us.hgmtrebing.swe699.model.Restaurant" />
     </session-factory>
 </hibernate-configuration>

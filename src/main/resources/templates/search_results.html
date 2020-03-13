@@ -12,8 +12,8 @@
 </head>
 <body>
     <div class="container-lg mt-5">
-        <h1 th:if="${results.resultsType.name() == 'SUCCESSFUL_SEARCH_RESULTS'}">Results for your search: &ldquo;<span th:text="${results.request.textSearchInput}"></span>&rdquo; near Zip Code <span th:text="${results.request.zipCode}"></span></h1>
-        <h1 th:if="${results.resultsType.name() == 'FAILED_SEARCH_RESULTS'}">We could not find anything matching: &ldquo;<span th:text="${results.request.textSearchInput}"></span>&rdquo; <br> Here are some restaurants near your location.</h1>
+        <h1 th:if="${results.restaurantSearchResultsType.name() == 'SUCCESSFUL_SEARCH_RESULTS'}">Results for your search: &ldquo;<span th:text="${results.request.textSearchInput}"></span>&rdquo; near Zip Code <span th:text="${results.request.zipCode}"></span></h1>
+        <h1 th:if="${results.restaurantSearchResultsType.name() == 'FAILED_SEARCH_RESULTS'}">We could not find anything matching: &ldquo;<span th:text="${results.request.textSearchInput}"></span>&rdquo; <br> Here are some restaurants near your location.</h1>
         <div class="list-group">
             <a th:each="result: ${results}" class="list-group-item">
                 <h5 class="mb-1" th:text="${result.name}"></h5>

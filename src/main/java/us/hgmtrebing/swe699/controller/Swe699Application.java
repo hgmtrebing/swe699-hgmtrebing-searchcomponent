@@ -1,4 +1,4 @@
-package us.hgmtrebing.swe699;
+package us.hgmtrebing.swe699.controller;
 
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;

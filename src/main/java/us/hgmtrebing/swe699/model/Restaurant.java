@@ -1,7 +1,8 @@
-package us.hgmtrebing.swe699.database.hibernate;
+package us.hgmtrebing.swe699.model;
 
 import lombok.Getter;
 import lombok.Setter;
+import us.hgmtrebing.swe699.database.MysqlConnection;
 
 import javax.persistence.*;
 import java.util.HashSet;

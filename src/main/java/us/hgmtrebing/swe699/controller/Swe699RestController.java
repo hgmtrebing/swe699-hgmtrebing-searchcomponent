@@ -1,4 +1,4 @@
-package us.hgmtrebing.swe699;
+package us.hgmtrebing.swe699.controller;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -6,11 +6,10 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
-import us.hgmtrebing.swe699.database.hibernate.HibernateConnection;
-import us.hgmtrebing.swe699.model.Cuisine;
-import us.hgmtrebing.swe699.search.SearchEngine;
-import us.hgmtrebing.swe699.search.SearchRequest;
-import us.hgmtrebing.swe699.search.SearchResults;
+import us.hgmtrebing.swe699.database.HibernateConnection;
+import us.hgmtrebing.swe699.search.RestaurantSearchEngine;
+import us.hgmtrebing.swe699.search.RestaurantSearchRequest;
+import us.hgmtrebing.swe699.search.RestaurantSearchResults;
 
 import java.util.List;
 
@@ -58,15 +57,15 @@ public class Swe699RestController {
 
         log.info("Search request received with the following parameters: \n{} \n{} \n{} \n{} \n{}", textSearch, streetAddress, city, state, zipCode);
 
-        SearchRequest request = new SearchRequest();
+        RestaurantSearchRequest request = new RestaurantSearchRequest();
         request.setTextSearchInput(textSearch);
         request.setStreetAddress(streetAddress.equals("") ? null : streetAddress);
         request.setCity(city.equals("") ? null : city);
         request.setState(state.equals("") ? null : state);
         request.setZipCode(Integer.parseInt(zipCode));
 
-        SearchEngine engine = new SearchEngine(this.connection);
-        SearchResults results = engine.getSearchResults(request);
+        RestaurantSearchEngine engine = new RestaurantSearchEngine(this.connection);
+        RestaurantSearchResults results = engine.getSearchResults(request);
 
         model.addAttribute("results", results);
 

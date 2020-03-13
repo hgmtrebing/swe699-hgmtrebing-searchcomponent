@@ -1,66 +1,42 @@
 package us.hgmtrebing.swe699.model;
 
-public enum Cuisine {
-    ANY,
+import lombok.Getter;
+import lombok.Setter;
 
-    SPANISH,
-    FRENCH,
-    IRISH,
-    BRITISH,
-    GERMAN,
-    GREEK,
-    ITALIAN,
-    RUSSIAN,
-    EAST_EUROPEAN,
-    MEDITERREAN,
+import javax.persistence.*;
+import java.io.Serializable;
+import java.util.HashSet;
+import java.util.Set;
 
-    ASIAN,
-    CHINESE,
-    JAPANESE,
-    KOREAN,
-    VIETNAMESE,
-    THAI,
+@Entity
+@Table(name = Cuisine.cuisineTableName)
+public class Cuisine implements Serializable {
 
-    INDIAN,
-    PERSIAN,
-    AFGHAN,
-    TURKISH,
-    LEBANESE,
-    ARAB,
+    public static final String cuisineTableName = "tbl_cuisines";
+    public static final String cuisineColIdName = "col_cuisine_id";
+    public static final String cuisineColNameName = "col_cuisine_name";
 
-    LATIN_AMERICAN,
-    MEXICAN,
-    CENTRAL_AMERICAN,
+    @Getter
+    @Setter
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name=Cuisine.cuisineColIdName, unique = true, nullable = false)
+    private int id;
 
-    BARBAQUE,
-    CLASSIC_AMERICAN,
-    GENERAL_AMERICAN,
-    TEX_MEX,
-    HAPPY_HOUR_FOOD,
-    SOUL_FOOD,
-    CAJUN,
-    BAR_FOOD,
+    @Getter
+    @Setter
+    @Column(name =Cuisine.cuisineColNameName, unique = true, nullable = false, length = 255)
+    private String name;
 
-    BUFFET,
-    SUSHI,
-    HIBACHI,
-    PHO,
-    FUSION,
-    VEGAN,
-    VEGETARIAN,
+    @Getter
+    @Setter
+    @ManyToMany (fetch = FetchType.LAZY, mappedBy = "cuisines")
+    private Set<Restaurant> restaurants = new HashSet<>();
 
-    FAST_FOOD,
-    CASUAL,
-    SIT_DOWN,
-    FORMAL
-    ;
+    public Cuisine() {}
 
-    public static Cuisine parseFromString(String input) {
-        for (Cuisine cuisine : Cuisine.values()) {
-            if (input.equalsIgnoreCase(cuisine.name())) {
-                return cuisine;
-            }
-        }
-        return null;
+    @Override
+    public String toString() {
+        return this.name;
     }
 }
