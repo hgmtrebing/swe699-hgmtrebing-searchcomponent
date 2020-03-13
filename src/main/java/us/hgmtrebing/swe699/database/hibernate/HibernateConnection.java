@@ -87,6 +87,14 @@ public class HibernateConnection {
         return successful;
     }
 
+    public List<Cuisine> getAllCuisines() {
+        this.session.beginTransaction();
+        Query query = this.session.createQuery("from Cuisine as cuisine");
+        List cuisines = query.getResultList();
+        this.session.getTransaction().commit();
+        return cuisines;
+    }
+
     public SearchResults search(SearchRequest request) {
         try {
             this.session.beginTransaction();

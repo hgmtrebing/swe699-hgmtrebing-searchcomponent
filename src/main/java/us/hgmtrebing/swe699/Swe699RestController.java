@@ -12,6 +12,8 @@ import us.hgmtrebing.swe699.search.SearchEngine;
 import us.hgmtrebing.swe699.search.SearchRequest;
 import us.hgmtrebing.swe699.search.SearchResults;
 
+import java.util.List;
+
 @Controller
 public class Swe699RestController {
 
@@ -30,6 +32,22 @@ public class Swe699RestController {
         return "Goodbye peeps!";
     }
 
+    @RequestMapping("/advanced_search")
+    public String advancedSearch() {
+        return "advanced_search";
+    }
+
+    @RequestMapping("/browse")
+    public String browse(Model model) {
+        HibernateConnection connection = new HibernateConnection();
+        connection.connect();
+        List cuisines = connection.getAllCuisines();
+        connection.disconnect();
+
+        model.addAttribute("cuisines", cuisines);
+        return "browse";
+    }
+
     @RequestMapping("/restaurant_search")
     public String restaurantSearch( @RequestParam("text-search") String textSearch,
                                     @RequestParam(value = "street-address", defaultValue="") String streetAddress,
@@ -42,15 +60,13 @@ public class Swe699RestController {
 
         SearchRequest request = new SearchRequest();
         request.setTextSearchInput(textSearch);
-        request.setStreetAddress(streetAddress);
-        request.setCity(city);
-        request.setState(state);
+        request.setStreetAddress(streetAddress.equals("") ? null : streetAddress);
+        request.setCity(city.equals("") ? null : city);
+        request.setState(state.equals("") ? null : state);
         request.setZipCode(Integer.parseInt(zipCode));
 
         SearchEngine engine = new SearchEngine(this.connection);
         SearchResults results = engine.getSearchResults(request);
-        System.out.println(results.getResultsType());
-
 
         model.addAttribute("results", results);
 

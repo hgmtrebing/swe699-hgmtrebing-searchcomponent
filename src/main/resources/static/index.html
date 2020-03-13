@@ -17,13 +17,28 @@
         <h2>Let us help you search for your next meal!</h2>
 
 
-        <form class="form-inline" action="/restaurant_search">
-            <div class="form-group mt-5">
-               <label for="restaurant-text-search">Hungry? Get started here:</label>
-                <input id="restaurant-text-search" name="text-search" class="form-control form-control-lg ml-3" type="text" placeholder="Search for Restaurants">
-                <button type="submit" class="btn btn-primary ml-1 form-control-lg">Go!</button>
+        <form class="form" action="/restaurant_search">
+            <div class="form-group mt-5 row">
+                <div class="col-2">
+                    <label for="restaurant-text-search">Hungry? Get started here:</label>
+                </div>
+                <div class="col-9">
+                    <input id="restaurant-text-search" name="text-search" class="form-control form-control-lg" type="text" placeholder="Search for Restaurants">
+                </div>
+                <div class="col-1">
+                    <button type="submit" class="btn btn-primary form-control">Go!</button>
+                </div>
             </div>
         </form>
+
+        <div class="row">
+        <form class="form" action="/advanced_search">
+            <button id="advanced-search-button" type="submit" class="btn btn-success form-control-lg">Or, try the Advanced Search</button>
+        </form>
+        <form class="form ml-5" action="/browse">
+            <button id="browse-button" type="submit" class="btn btn-warning form-control-lg">Or, just try Browsing</button>
+        </form>
+        </div>
     </div>
 </body>
 </html>

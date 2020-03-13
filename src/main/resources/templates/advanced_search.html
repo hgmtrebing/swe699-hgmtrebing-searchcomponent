@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Advanced Search</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+    <script src="https://code.jquery.com/jquery-3.4.1.js" integrity="sha256-WpOohJOqMqqyKL9FccASB9O0KwACQJpFTUBLTYOVvVU="  crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js" integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous"></script>
+
+    <link rel="stylesheet" href="index.css" type="text/css">
+</head>
+<body>
+    <div class="container-md">
+        <h1>Welcome to the Order Out Advanced Search</h1>
+
+        <form class="form mt-5" action="/restaurant_search">
+
+            <div class="form-group">
+                <label for="restaurant-text-search">Restaurant Name: </label>
+                <input id="restaurant-text-search" name="text-search" class="form-control form-control-lg mb-2" type="text" placeholder="Search for Restaurant Name">
+
+                <label for="restaurant-street-address">Restaurant Street Address: </label>
+                <input id="restaurant-street-address" name="street-address" class="form-control form-control-lg mb-2" type="text" placeholder="Input Street Address">
+
+                <label for="restaurant-city">Restaurant City: </label>
+                <input id="restaurant-city" name="city" class="form-control form-control-lg mb-2" type="text" placeholder="Input City">
+
+                <label for="restaurant-state">Restaurant State: </label>
+                <input id="restaurant-state" name="state" class="form-control form-control-lg mb-2" type="text" placeholder="Input State">
+
+                <label for="restaurant-zipcode">Restaurant Zip Code: </label>
+                <input id="restaurant-zipcode" name="zipcode" class="form-control form-control-lg mb-2" type="text" placeholder="Input Zip Code">
+            </div>
+
+            <button class="btn btn-primary">Search!</button>
+
+        </form>
+
+    </div>
+</body>
+</html>
