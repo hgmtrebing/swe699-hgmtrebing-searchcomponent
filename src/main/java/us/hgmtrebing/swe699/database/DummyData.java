@@ -48,10 +48,10 @@ public class DummyData {
 
             Restaurant r01 = new Restaurant();
             r01.setName("Artie's");
-            r01.setPublicId(01);
+            r01.setPublicId("01");
             r01.setStreetAddress("3260 Old Lee Hwy");
             r01.setCity("Fairfax");
-            r01.setState(State.VIRGINIA);
+            r01.setState("Virginia");
             r01.setZipCode(22030);
             r01.setPricing(Pricing.TWO_STAR);
             r01.incrementSearchCount();
@@ -62,10 +62,10 @@ public class DummyData {
 
             Restaurant r02 = new Restaurant();
             r02.setName("Arigato Sushi");
-            r02.setPublicId(02);
+            r02.setPublicId("02");
             r02.setStreetAddress("y");
             r02.setCity("Fairfax");
-            r02.setState(State.VIRGINIA);
+            r02.setState("Virginia");
             r02.setZipCode(22030);
             r02.setPricing(Pricing.TWO_STAR);
             r02.incrementSearchCount();

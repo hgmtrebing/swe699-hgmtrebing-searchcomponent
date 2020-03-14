@@ -1,70 +1,106 @@
 package us.hgmtrebing.swe699.controller;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.boot.json.JsonParser;
 import org.springframework.boot.json.JsonParserFactory;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.client.RestTemplate;
 import us.hgmtrebing.swe699.database.HibernateConnection;
 import us.hgmtrebing.swe699.database.MysqlConnection;
+import us.hgmtrebing.swe699.model.Cuisine;
+import us.hgmtrebing.swe699.model.Restaurant;
 
-import java.util.Map;
-import java.util.Timer;
-import java.util.TimerTask;
+import java.math.BigInteger;
+import java.util.*;
 
 public class RestaurantManagerRequestor {
 
+    private static Logger log = LoggerFactory.getLogger(RestaurantManagerRequestor.class);
 
-    private String restaurantListUrl;
-    private int restaurantTimerInterval;
-    private TimerTask restaurantTask;
-    private Timer restaurantTimer;
+    private static String restaurantListUrl = "http://3.86.25.222:8080/RestaurantManager-0.0.1/restaurant/list";
 
-    private String cuisineListUrl;
-    private int cuisineTimerInterval;
-    private TimerTask cuisineTask;
-    private Timer cuisineTimer;
+    private static String cuisineListUrl = "http://3.86.25.222:8080/RestaurantManager-0.0.1/restaurant/categories";
 
-    private MysqlConnection mysqlConnection;
-    private HibernateConnection hibernateConnection;
-
-    public RestaurantManagerRequestor(MysqlConnection mysqlConnection, HibernateConnection hibernateConnection) {
-
-        this.mysqlConnection = mysqlConnection;
-        this.hibernateConnection = hibernateConnection;
-
-        this.mysqlConnection.connect();
-        this.mysqlConnection.initializeDatabaseSchema(false);
-        this.mysqlConnection.closeConnection();
+    public RestaurantManagerRequestor() {
 
 
-        this.cuisineTimerInterval = 60_000 * 15;
-        this.cuisineTask = new TimerTask() {
+
+
+        int retrieverTimerInterval = 60_000;
+        TimerTask retrieverTask = new TimerTask() {
             @Override
             public void run() {
+                log.info("Retrieving data from Restaurant Manager");
+                MysqlConnection mysqlConnection = new MysqlConnection();
+                mysqlConnection.connect();
+                mysqlConnection.initializeDatabaseSchema(false);
+                mysqlConnection.closeConnection();
 
+                retrieveAndInsertCuisines();
+                retrieveAndInsertRestaurants();
             }
         };
-        this.cuisineTimer = new Timer();
-        this.cuisineTimer.schedule(this.cuisineTask, 0, this.cuisineTimerInterval);
-
-        this.restaurantTimerInterval = 60_000 * 15;
-        this.restaurantTask = new TimerTask() {
-            @Override
-            public void run() {
-                hibernateConnection.connect();
-                RestTemplate restTemplate = new RestTemplate();
-                ResponseEntity<String> response = restTemplate.getForEntity(restaurantListUrl, String.class);
-                JsonParser parser = JsonParserFactory.getJsonParser();
-                Map<String, Object> responseBody = parser.parseMap(response.getBody());
-
-                hibernateConnection.flush();
-                hibernateConnection.disconnect();
-            }
-        };
-        this.restaurantTimer = new Timer();
-        this.restaurantTimer.schedule(this.restaurantTask, 0, this.restaurantTimerInterval);
-
+        Timer retrieverTimer = new Timer();
+        retrieverTimer.schedule(retrieverTask, 0, retrieverTimerInterval);
     }
 
+    public static void retrieveAndInsertCuisines() {
+        RestTemplate restTemplate = new RestTemplate();
+        ResponseEntity<String> response = restTemplate.getForEntity(cuisineListUrl, String.class);
+        JsonParser parser = JsonParserFactory.getJsonParser();
+        List<Object> responseBody = parser.parseList((response.getBody()));
 
+        MysqlConnection connection = new MysqlConnection();
+        connection.connect();
+        for (Object o : responseBody) {
+            Cuisine cuisine = connection.getCuisineByName(o.toString());
+            if (cuisine == null || cuisine.getName() == null || !(cuisine.getName().equalsIgnoreCase(o.toString()))) {
+                connection.addNewCuisine(o.toString());
+            }
+        }
+        connection.closeConnection();
+    }
+
+    public static void retrieveAndInsertRestaurants() {
+
+        MysqlConnection connection = new MysqlConnection();
+        connection.connect();
+
+        RestTemplate restTemplate = new RestTemplate();
+        ResponseEntity<String> response = restTemplate.getForEntity(restaurantListUrl, String.class);
+        JsonParser parser = JsonParserFactory.getJsonParser();
+        Map<String, Object> responseBody = parser.parseMap((response.getBody()));
+
+        List<Restaurant> restaurants = new ArrayList<>();
+
+        for (Map.Entry<String, Object> restaurantEntry: responseBody.entrySet()) {
+
+            Restaurant restaurant = new Restaurant();
+            restaurant.setPublicId(restaurantEntry.getKey());
+            Map<String, Object> restaurantObject = (Map<String, Object>)restaurantEntry.getValue();
+            restaurant.setName((String) restaurantObject.get("Name"));
+
+            Map<String, Object> locationObject = (Map<String, Object>) restaurantObject.get("Location");
+            restaurant.setStreetAddress((String)locationObject.get("Street"));
+            restaurant.setCity((String)locationObject.get("City"));
+            restaurant.setZipCode(Integer.parseInt((String)locationObject.get("Zipcode")));
+            restaurant.setState((String)locationObject.get("State"));
+
+            List<Object> categories = (List<Object>)restaurantObject.get("Categories");
+            for (Object o : categories) {
+               Cuisine c = connection.getCuisineByName(o.toString());
+               if (c != null || c.getName() != null) {
+                   restaurant.addCuisine(c);
+               }
+            }
+            restaurants.add(restaurant);
+        }
+
+        for (Restaurant restaurant : restaurants) {
+            connection.addNewRestaurant(restaurant);
+        }
+
+        connection.closeConnection();
+    }
 }

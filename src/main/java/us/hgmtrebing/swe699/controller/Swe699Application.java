@@ -12,9 +12,11 @@ import java.util.Arrays;
 public class Swe699Application {
 
 	public static void main(String[] args) {
+		new RestaurantManagerRequestor();
 		SpringApplication.run(Swe699Application.class, args);
 	}
 
+	/*
 	@Bean
 	public CommandLineRunner commandLineRunner(ApplicationContext ctx) {
 		return args -> {
@@ -29,5 +31,7 @@ public class Swe699Application {
 
 		};
 	}
+
+	 */
 
 }

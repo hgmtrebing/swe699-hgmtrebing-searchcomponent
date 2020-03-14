@@ -2,12 +2,14 @@ package us.hgmtrebing.swe699.model;
 
 import lombok.Getter;
 import lombok.Setter;
+import lombok.ToString;
 import us.hgmtrebing.swe699.database.MysqlConnection;
 
 import javax.persistence.*;
 import java.util.HashSet;
 import java.util.Set;
 
+@ToString
 @Entity
 @Table(name = Restaurant.restaurantTableName)
 public class Restaurant {
@@ -34,7 +36,7 @@ public class Restaurant {
     @Setter
     @Getter
     @Column(name=Restaurant.restaurantPublicIdName, unique = false, nullable = false)
-    private int publicId;
+    private String publicId;
 
     @Setter
     @Getter
@@ -54,8 +56,8 @@ public class Restaurant {
     @Getter
     @Setter
     @Column(name=Restaurant.restaurantStateName, unique = false, nullable = false)
-    @Enumerated(EnumType.STRING)
-    private State state;
+    // @Enumerated(EnumType.STRING)
+    private String state;
 
     @Getter
     @Setter
@@ -105,4 +107,5 @@ public class Restaurant {
             this.cuisines.add(cuisine);
         }
     }
+
 }
