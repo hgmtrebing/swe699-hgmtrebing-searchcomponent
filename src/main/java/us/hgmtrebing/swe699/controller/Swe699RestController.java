@@ -7,10 +7,13 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import us.hgmtrebing.swe699.database.HibernateConnection;
+import us.hgmtrebing.swe699.database.MysqlConnection;
+import us.hgmtrebing.swe699.search.RestaurantBrowseRequest;
 import us.hgmtrebing.swe699.search.RestaurantSearchEngine;
 import us.hgmtrebing.swe699.search.RestaurantSearchRequest;
 import us.hgmtrebing.swe699.search.RestaurantSearchResults;
 
+import java.util.Arrays;
 import java.util.List;
 
 @Controller
@@ -45,6 +48,25 @@ public class Swe699RestController {
 
         model.addAttribute("cuisines", cuisines);
         return "browse";
+    }
+
+    @RequestMapping("/restaurant_browse")
+    private String restaurantBrowse(@RequestParam("cuisine") String cuisineList,
+                                    Model model) {
+        RestaurantBrowseRequest browseRequest = new RestaurantBrowseRequest();
+
+        MysqlConnection mysqlConnection = new MysqlConnection();
+        mysqlConnection.connect();
+        String[] cuisines = cuisineList.split(",");
+        for (String cuisine : cuisines) {
+            browseRequest.addCuisine(mysqlConnection.getCuisineByName(cuisine));
+        }
+
+        RestaurantSearchEngine engine = new RestaurantSearchEngine(this.connection);
+        RestaurantSearchResults results = engine.getBrowseResults(browseRequest);
+        model.addAttribute("results", results);
+
+        return "search_results";
     }
 
     @RequestMapping("/restaurant_search")

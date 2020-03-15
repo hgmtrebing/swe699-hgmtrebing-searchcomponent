@@ -141,6 +141,7 @@ public class MysqlConnection {
            return cuisine;
        }
     }
+
     public Cuisine getCuisineById(int id) {
         Cuisine cuisine = new Cuisine();
         String query = "SELECT * FROM " + Cuisine.cuisineTableName + " WHERE " + Cuisine.cuisineColIdName + " = '" + id + "'";
@@ -193,6 +194,32 @@ public class MysqlConnection {
             }
         } catch (Exception e) {
            log.warn("Error encountered when trying to get a Restaurant by Public Id", e);
+        }
+        return restaurant;
+    }
+
+
+    public Restaurant getRestaurantByInternalId(int id) {
+        String query = "SELECT * FROM " + Restaurant.restaurantTableName + " WHERE " + Restaurant.restaurantIdName + "=?";
+        Restaurant restaurant = null;
+        try {
+            PreparedStatement statement = this.connection.prepareStatement(query);
+            statement.setInt(1, id);
+            ResultSet set = statement.executeQuery();
+            while (set.next()) {
+                restaurant = new Restaurant();
+                restaurant.setId(set.getInt(Restaurant.restaurantIdName));
+                restaurant.setPublicId(set.getString(Restaurant.restaurantPublicIdName));
+                restaurant.setName(set.getString(Restaurant.restaurantNameName));
+                restaurant.setStreetAddress(set.getString(Restaurant.restaurantStreetAddressName));
+                restaurant.setCity(set.getString(Restaurant.restaurantCityName));
+                restaurant.setState(set.getString(Restaurant.restaurantStateName));
+                restaurant.setZipCode(set.getInt(Restaurant.restaurantZipcodeName));
+                restaurant.setClickCount(set.getInt(Restaurant.restaurantClickCountName));
+                restaurant.setSearchCount(set.getInt(Restaurant.restaurantSearchCountName));
+            }
+        } catch (Exception e) {
+            log.warn("Error encountered when trying to get a Restaurant by Public Id", e);
         }
         return restaurant;
     }
@@ -327,6 +354,26 @@ public class MysqlConnection {
             log.warn("Error encountered when trying to query a restaurant's cuisines!", e);
         }
         return cuisines;
+    }
+
+    public Set<Restaurant> getRestaurantsByCuisineId(int cuisineId) {
+        String query = "SELECT * FROM " + associationTableName + " WHERE " + associationCuisineIdName + " = ? ";
+        Set<Restaurant> restaurants = new HashSet<>();
+
+        try {
+            PreparedStatement statement = this.connection.prepareStatement(query);
+            statement.setInt(1, cuisineId);
+            ResultSet resultSet = statement.executeQuery();
+            while (resultSet.next()) {
+                Restaurant r = this.getRestaurantByInternalId( resultSet.getInt(associationRestaurantIdName));
+                restaurants.add(r);
+            }
+
+        } catch (Exception e) {
+            log.warn("Error encountered when trying to query a cuisine's restaurants!", e);
+        }
+
+        return restaurants;
     }
 
     public void closeConnection() {

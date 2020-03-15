@@ -36,6 +36,10 @@ public class RestaurantSearchResults implements Iterable<Restaurant>{
 
     }
     public void addSearchResult(Restaurant result) {
+        if (this.results.contains(result)) {
+            return;
+        }
+
         this.results.add(result);
     }
 

@@ -18,14 +18,11 @@ public class RestaurantManagerRequestor {
 
     private static Logger log = LoggerFactory.getLogger(RestaurantManagerRequestor.class);
 
-    private static String restaurantListUrl = "http://3.86.25.222:8080/RestaurantManager-0.0.1/restaurant/list";
+    private static String restaurantListUrl = "http://3.84.29.72:8080/RestaurantManager-0.0.1/restaurant/list";
 
-    private static String cuisineListUrl = "http://3.86.25.222:8080/RestaurantManager-0.0.1/restaurant/categories";
+    private static String cuisineListUrl = "http://3.84.29.72:8080/RestaurantManager-0.0.1/restaurant/categories";
 
     public RestaurantManagerRequestor() {
-
-
-
 
         int retrieverTimerInterval = 60_000;
         TimerTask retrieverTask = new TimerTask() {
