@@ -170,7 +170,7 @@ public class HibernateConnection {
             return results;
 
         } catch (Exception e) {
-            log.warn("Error encoutered during query", e);
+            log.warn("Error encountered during query", e);
         }
         RestaurantSearchResults results = new RestaurantSearchResults();
         results.setRequest(request);

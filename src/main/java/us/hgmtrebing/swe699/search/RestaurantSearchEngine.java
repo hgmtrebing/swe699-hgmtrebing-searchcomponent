@@ -20,6 +20,7 @@ public class RestaurantSearchEngine {
 
     public RestaurantSearchResults getSearchResults(RestaurantSearchRequest request) {
         RestaurantSearchResults tempResults = this.connection.search(request);
+        /*
         RestaurantSearchResults newResults = new RestaurantSearchResults();
         newResults.setRequest(request);
         for (Restaurant result : tempResults) {
@@ -27,14 +28,15 @@ public class RestaurantSearchEngine {
                 newResults.addSearchResult(result);
             }
         }
+         */
 
-        if (newResults.getNumberOfSearchResults() > 0) {
-            newResults.setRestaurantSearchResultsType(us.hgmtrebing.swe699.search.RestaurantSearchResultsType.SUCCESSFUL_SEARCH_RESULTS);
-            return newResults;
+        if (tempResults.getNumberOfSearchResults() > 0) {
+            tempResults.setRestaurantSearchResultsType(us.hgmtrebing.swe699.search.RestaurantSearchResultsType.SUCCESSFUL_SEARCH_RESULTS);
+            return tempResults;
         } else {
-            newResults = getDefaultResults(request);
-            newResults.setRestaurantSearchResultsType(us.hgmtrebing.swe699.search.RestaurantSearchResultsType.FAILED_SEARCH_RESULTS);
-            return newResults;
+            tempResults = getDefaultResults(request);
+            tempResults.setRestaurantSearchResultsType(us.hgmtrebing.swe699.search.RestaurantSearchResultsType.FAILED_SEARCH_RESULTS);
+            return tempResults;
         }
     }
 
