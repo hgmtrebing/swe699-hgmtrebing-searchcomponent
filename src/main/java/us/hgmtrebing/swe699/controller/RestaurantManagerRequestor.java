@@ -18,9 +18,9 @@ public class RestaurantManagerRequestor {
 
     private static Logger log = LoggerFactory.getLogger(RestaurantManagerRequestor.class);
 
-    private static String restaurantListUrl = "http://3.84.29.72:8080/RestaurantManager-0.0.1/restaurant/list";
+    private static String restaurantListUrl = "http://3.88.210.26:8080/RestaurantManager-0.0.1/restaurant/list";
 
-    private static String cuisineListUrl = "http://3.84.29.72:8080/RestaurantManager-0.0.1/restaurant/categories";
+    private static String cuisineListUrl = "http://3.88.210.26:8080/RestaurantManager-0.0.1/restaurant/categories";
 
     public RestaurantManagerRequestor() {
 
@@ -56,6 +56,7 @@ public class RestaurantManagerRequestor {
                 connection.addNewCuisine(o.toString());
             }
         }
+        log.info("Successfully retrieved Cuisines from Restaurant Manager API");
         connection.closeConnection();
     }
 
@@ -98,6 +99,7 @@ public class RestaurantManagerRequestor {
             connection.addNewRestaurant(restaurant);
         }
 
+        log.info("Successfully retrieved Restaurants from Restaurant Manager API");
         connection.closeConnection();
     }
 }
