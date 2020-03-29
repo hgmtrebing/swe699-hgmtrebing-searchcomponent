@@ -6,12 +6,10 @@ import org.springframework.boot.json.JsonParser;
 import org.springframework.boot.json.JsonParserFactory;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.client.RestTemplate;
-import us.hgmtrebing.swe699.database.HibernateConnection;
 import us.hgmtrebing.swe699.database.MysqlConnection;
 import us.hgmtrebing.swe699.model.Cuisine;
 import us.hgmtrebing.swe699.model.Restaurant;
 
-import java.math.BigInteger;
 import java.util.*;
 
 public class RestaurantManagerRequestor {
