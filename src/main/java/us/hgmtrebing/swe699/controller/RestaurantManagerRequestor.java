@@ -94,7 +94,11 @@ public class RestaurantManagerRequestor {
         }
 
         for (Restaurant restaurant : restaurants) {
-            connection.addNewRestaurant(restaurant);
+            if (!connection.doesRestaurantExist(restaurant.getPublicId())) {
+                log.info("Adding a new restaurant: {}", restaurant);
+                connection.addNewRestaurant(restaurant);
+            }
+            log.info("Restaurant already exists; skipping : {}", restaurant);
         }
 
         log.info("Successfully retrieved Restaurants from Restaurant Manager API");
