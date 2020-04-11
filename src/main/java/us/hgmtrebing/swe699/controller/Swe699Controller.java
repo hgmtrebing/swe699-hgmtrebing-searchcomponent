@@ -90,6 +90,7 @@ public class Swe699Controller {
 
         RestaurantSearchEngine engine = new RestaurantSearchEngine(this.connection);
         RestaurantSearchResults results = engine.getSearchResults(request);
+        results.incrementAllSearchResults();
 
         model.addAttribute("results", results);
 

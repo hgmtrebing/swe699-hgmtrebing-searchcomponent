@@ -93,8 +93,6 @@ public class Restaurant {
     private Set<Cuisine> cuisines = new HashSet<>();
 
     public Restaurant() {
-        this.searchCount = 0;
-        this.clickCount = 0;
     }
 
     public void incrementSearchCount() {

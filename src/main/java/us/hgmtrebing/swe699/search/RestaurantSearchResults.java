@@ -2,6 +2,7 @@ package us.hgmtrebing.swe699.search;
 
 import lombok.Getter;
 import lombok.Setter;
+import us.hgmtrebing.swe699.database.MysqlConnection;
 import us.hgmtrebing.swe699.model.Restaurant;
 
 import java.util.ArrayList;
@@ -67,6 +68,16 @@ public class RestaurantSearchResults implements Iterable<Restaurant>{
 
     public int getNumberOfSearchResults() {
         return this.results.size();
+    }
+
+    public void incrementAllSearchResults() {
+        MysqlConnection connection = new MysqlConnection();
+        connection.connect();
+        for (Restaurant restaurant : this) {
+            restaurant.incrementSearchCount();
+            connection.addNewRestaurant(restaurant);
+        }
+        connection.closeConnection();
     }
 
     @Override
