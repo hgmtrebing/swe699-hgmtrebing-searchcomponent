@@ -1,5 +1,6 @@
 package us.hgmtrebing.swe699.model;
 
+import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
@@ -12,6 +13,7 @@ import java.util.Set;
 @ToString
 @Entity
 @Table(name = Restaurant.restaurantTableName)
+@EqualsAndHashCode
 public class Restaurant {
 
     public static final String restaurantTableName = "tbl_restaurants";
@@ -87,6 +89,7 @@ public class Restaurant {
             @JoinColumn(name = MysqlConnection.associationRestaurantIdName , nullable = false, updatable = false) },
             inverseJoinColumns = { @JoinColumn(name = MysqlConnection.associationCuisineIdName,
                     nullable = false, updatable = false) })
+    @EqualsAndHashCode.Exclude
     private Set<Cuisine> cuisines = new HashSet<>();
 
     public Restaurant() {

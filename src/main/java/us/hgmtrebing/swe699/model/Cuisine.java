@@ -1,5 +1,6 @@
 package us.hgmtrebing.swe699.model;
 
+import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -10,6 +11,7 @@ import java.util.Set;
 
 @Entity
 @Table(name = Cuisine.cuisineTableName)
+@EqualsAndHashCode
 public class Cuisine implements Serializable {
 
     public static final String cuisineTableName = "tbl_cuisines";
@@ -31,12 +33,14 @@ public class Cuisine implements Serializable {
     @Getter
     @Setter
     @ManyToMany (fetch = FetchType.LAZY, mappedBy = "cuisines")
+    @EqualsAndHashCode.Exclude
     private Set<Restaurant> restaurants = new HashSet<>();
 
-    public Cuisine() {}
+    public Cuisine() { }
 
     @Override
     public String toString() {
         return this.name;
     }
+
 }
