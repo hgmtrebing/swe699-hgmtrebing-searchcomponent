@@ -1,6 +1,5 @@
 package us.hgmtrebing.swe699.search;
 
-import us.hgmtrebing.swe699.database.HibernateConnection;
 import us.hgmtrebing.swe699.database.MysqlConnection;
 import us.hgmtrebing.swe699.model.Cuisine;
 import us.hgmtrebing.swe699.model.Restaurant;
@@ -11,15 +10,16 @@ import java.util.Set;
 
 public class RestaurantSearchEngine {
 
-    private HibernateConnection connection;
+    private MysqlConnection connection;
 
-    public RestaurantSearchEngine(HibernateConnection connection) {
+    public RestaurantSearchEngine(MysqlConnection connection) {
         this.connection = connection;
-
     }
 
     public RestaurantSearchResults getSearchResults(RestaurantSearchRequest request) {
+        this.connection.connect();
         RestaurantSearchResults tempResults = this.connection.search(request);
+        this.connection.closeConnection();
         /*
         RestaurantSearchResults newResults = new RestaurantSearchResults();
         newResults.setRequest(request);
@@ -41,12 +41,12 @@ public class RestaurantSearchEngine {
     }
 
     public RestaurantSearchResults getBrowseResults(RestaurantBrowseRequest request) {
-        MysqlConnection connection = new MysqlConnection();
-        connection.connect();
 
         RestaurantSearchResults results = new RestaurantSearchResults();
         for (Cuisine cuisine : request.getAllCuisines()) {
-            Set<Restaurant> restaurants= connection.getRestaurantsByCuisineId(cuisine.getId());
+            this.connection.connect();
+            Set<Restaurant> restaurants= this.connection.getRestaurantsByCuisineId(cuisine.getId());
+            this.connection.closeConnection();
             for (Restaurant restaurant : restaurants) {
                 results.addSearchResult(restaurant);
             }

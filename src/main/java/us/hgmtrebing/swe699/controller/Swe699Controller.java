@@ -7,7 +7,6 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
-import us.hgmtrebing.swe699.database.HibernateConnection;
 import us.hgmtrebing.swe699.database.MysqlConnection;
 import us.hgmtrebing.swe699.model.Restaurant;
 import us.hgmtrebing.swe699.search.RestaurantBrowseRequest;
@@ -22,13 +21,12 @@ import java.util.List;
 public class Swe699Controller {
 
     Logger log = LoggerFactory.getLogger(this.getClass());
-    private HibernateConnection connection;
+    private MysqlConnection connection;
 
 
     public Swe699Controller() {
         super();
-        this.connection = new HibernateConnection();
-        this.connection.connect();
+        this.connection = new MysqlConnection();
     }
 
     @RequestMapping("/test")
@@ -43,10 +41,14 @@ public class Swe699Controller {
 
     @RequestMapping("/browse")
     public String browse(Model model) {
-        HibernateConnection connection = new HibernateConnection();
+        // HibernateConnection connection = new HibernateConnection();
+        // connection.connect();
+        MysqlConnection connection = new MysqlConnection();
         connection.connect();
+
         List cuisines = connection.getAllCuisines();
-        connection.disconnect();
+        connection.closeConnection();
+        // connection.disconnect();
 
         model.addAttribute("cuisines", cuisines);
         return "browse";

@@ -15,12 +15,14 @@ import java.util.Map;
 public class Testing {
 
     public static void main (String[] args) {
+        restaurantManagerRequester();
+    }
+
+    public static void restaurantManagerRequester() {
         MysqlConnection connection = new MysqlConnection();
         connection.connect();
-        connection.initializeDatabaseSchema(false);
+        connection.initializeDatabaseSchema(true);
         connection.closeConnection();
-        getRestaurantManagerCuisines();
-        getRestaurantManagerRestaurants();
     }
 
     public static void restAndParseJSON() {

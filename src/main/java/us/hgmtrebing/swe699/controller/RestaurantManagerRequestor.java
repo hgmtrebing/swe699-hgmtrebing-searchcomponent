@@ -8,9 +8,11 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.client.RestTemplate;
 import us.hgmtrebing.swe699.database.MysqlConnection;
 import us.hgmtrebing.swe699.model.Cuisine;
+import us.hgmtrebing.swe699.model.Pricing;
 import us.hgmtrebing.swe699.model.Restaurant;
 
 import java.util.*;
+import java.util.concurrent.atomic.DoubleAccumulator;
 
 public class RestaurantManagerRequestor {
 
@@ -19,6 +21,8 @@ public class RestaurantManagerRequestor {
     private static String restaurantListUrl = "http://3.88.210.26:8080/RestaurantManager-0.0.1/restaurant/list";
 
     private static String cuisineListUrl = "http://3.88.210.26:8080/RestaurantManager-0.0.1/restaurant/categories";
+
+    private static String menuUrl = "http://3.88.210.26:8080/RestaurantManager-0.0.1/menu/";
 
     public RestaurantManagerRequestor() {
 
@@ -82,6 +86,26 @@ public class RestaurantManagerRequestor {
             restaurant.setCity((String)locationObject.get("City"));
             restaurant.setZipCode(Integer.parseInt((String)locationObject.get("Zipcode")));
             restaurant.setState((String)locationObject.get("State"));
+
+            double menuItemSum = 0;
+            double menuItemAvg = 0;
+            int menuItemCount = 0;
+            RestTemplate restTemplate02 = new RestTemplate();
+            ResponseEntity<String> response02 = restTemplate02.getForEntity(menuUrl + restaurant.getPublicId(), String.class);
+            JsonParser parser02 = JsonParserFactory.getJsonParser();
+            Map<String, Object> responseBody02 = parser02.parseMap((response02.getBody()));
+            for (String key : responseBody02.keySet()) {
+                Map<String, Object> item = (Map) responseBody02.get(key);
+                Object price = item.get("Price");
+                if (price.getClass() == Double.class) {
+                    menuItemSum += ((Double) item.get("Price"));
+                } else {
+                    menuItemSum += ((Integer) item.get("Price"));
+                }
+                menuItemCount ++;
+            }
+            menuItemAvg = menuItemSum / menuItemCount;
+            restaurant.setPricing(Pricing.getPriceRankByPrice(menuItemAvg));
 
             List<Object> categories = (List<Object>)restaurantObject.get("Categories");
             for (Object o : categories) {

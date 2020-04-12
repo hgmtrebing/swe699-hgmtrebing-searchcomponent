@@ -5,6 +5,9 @@ import org.slf4j.LoggerFactory;
 import us.hgmtrebing.swe699.model.Cuisine;
 import us.hgmtrebing.swe699.model.Pricing;
 import us.hgmtrebing.swe699.model.Restaurant;
+import us.hgmtrebing.swe699.search.RestaurantSearchRequest;
+import us.hgmtrebing.swe699.search.RestaurantSearchResults;
+import us.hgmtrebing.swe699.search.RestaurantSearchResultsType;
 
 import java.sql.*;
 import java.util.ArrayList;
@@ -17,7 +20,7 @@ public class MysqlConnection {
 
     private String username = "swe699_user02";
     private String password = "password01";
-    private String connectionUrl = "jdbc:mysql://ec2-52-91-109-149.compute-1.amazonaws.com:3306/swe699_01";
+    private String connectionUrl = "jdbc:mysql://ec2-54-88-8-171.compute-1.amazonaws.com:3306/swe699_01";
     private String driver = "com.mysql.cj.jdbc.Driver";
 
     public static final String associationTableName = "tbl_restaurant_cuisine_association";
@@ -43,6 +46,71 @@ public class MysqlConnection {
         } catch (Exception e) {
             log.error("Error occurred while trying to connect to the database at {}: {}", this.connectionUrl, e.toString());
         }
+    }
+
+    public RestaurantSearchResults search(RestaurantSearchRequest request) {
+        try {
+            String queryString = "SELECT * FROM " + Restaurant.restaurantTableName;
+            boolean whereInserted = false;
+
+            if (request.getTextSearchInput() != null) {
+                if (whereInserted) {
+                    queryString += " and " + Restaurant.restaurantNameName + " like '%" + request.getTextSearchInput() + "%'";
+                } else {
+                    queryString += " where "+ Restaurant.restaurantNameName +" like '%" + request.getTextSearchInput() + "%'";
+                    whereInserted = true;
+                }
+            }
+
+            if (request.getStreetAddress() != null) {
+                if (whereInserted) {
+                    queryString += " and " + Restaurant.restaurantStreetAddressName +" = '" + request.getStreetAddress() + "'";
+                } else {
+                    queryString += " where " + Restaurant.restaurantStreetAddressName +" = '" + request.getStreetAddress() + "'";
+                    whereInserted = true;
+                }
+            }
+
+            if (request.getCity() != null) {
+                if (whereInserted) {
+                    queryString += " and " + Restaurant.restaurantCityName + " = '" + request.getCity() + "'";
+                } else {
+                    queryString += " where " + Restaurant.restaurantCityName + " = '" + request.getCity() + "'";
+                    whereInserted = true;
+                }
+            }
+
+            Statement statement = this.connection.createStatement();
+            ResultSet set = statement.executeQuery(queryString);
+
+            RestaurantSearchResults results = new RestaurantSearchResults();
+            while (set.next()) {
+                Restaurant restaurant = new Restaurant();
+                restaurant.setId(set.getInt(Restaurant.restaurantIdName));
+                restaurant.setPublicId(set.getString(Restaurant.restaurantPublicIdName));
+                restaurant.setName(set.getString(Restaurant.restaurantNameName));
+                restaurant.setStreetAddress(set.getString(Restaurant.restaurantStreetAddressName));
+                restaurant.setCity(set.getString(Restaurant.restaurantCityName));
+                restaurant.setState(set.getString(Restaurant.restaurantStateName));
+                restaurant.setZipCode(set.getInt(Restaurant.restaurantZipcodeName));
+                restaurant.setClickCount(set.getInt(Restaurant.restaurantClickCountName));
+                restaurant.setSearchCount(set.getInt(Restaurant.restaurantSearchCountName));
+                restaurant.setPricing(Pricing.parseFromString(set.getString(Restaurant.restaurantPricingName)));
+
+                Set<Cuisine> cuisines = this.getCuisinesByRestaurantId(restaurant.getId());
+                restaurant.setCuisines(cuisines);
+                results.addSearchResult((Restaurant) restaurant);
+            }
+            results.setRequest(request);
+            return results;
+
+        } catch (Exception e) {
+            log.warn("Error encountered during query", e);
+        }
+        RestaurantSearchResults results = new RestaurantSearchResults();
+        results.setRequest(request);
+        results.setRestaurantSearchResultsType(RestaurantSearchResultsType.FAILED_SEARCH_RESULTS);
+        return results;
     }
 
     public void initializeDatabaseSchema(boolean reinitialize) {
@@ -191,6 +259,7 @@ public class MysqlConnection {
                 restaurant.setZipCode(set.getInt(Restaurant.restaurantZipcodeName));
                 restaurant.setClickCount(set.getInt(Restaurant.restaurantClickCountName));
                 restaurant.setSearchCount(set.getInt(Restaurant.restaurantSearchCountName));
+                restaurant.setPricing(Pricing.parseFromString(set.getString(Restaurant.restaurantPricingName)));
             }
         } catch (Exception e) {
            log.warn("Error encountered when trying to get a Restaurant by Public Id", e);
@@ -217,6 +286,7 @@ public class MysqlConnection {
                 restaurant.setZipCode(set.getInt(Restaurant.restaurantZipcodeName));
                 restaurant.setClickCount(set.getInt(Restaurant.restaurantClickCountName));
                 restaurant.setSearchCount(set.getInt(Restaurant.restaurantSearchCountName));
+                restaurant.setPricing(Pricing.parseFromString(set.getString(Restaurant.restaurantPricingName)));
             }
         } catch (Exception e) {
             log.warn("Error encountered when trying to get a Restaurant by Public Id", e);
@@ -241,12 +311,12 @@ public class MysqlConnection {
                 restaurant.setZipCode(set.getInt(Restaurant.restaurantZipcodeName));
                 restaurant.setClickCount(set.getInt(Restaurant.restaurantClickCountName));
                 restaurant.setSearchCount(set.getInt(Restaurant.restaurantSearchCountName));
+                restaurant.setPricing(Pricing.parseFromString(set.getString(Restaurant.restaurantPricingName)));
 
                 Set<Cuisine> cuisines = this.getCuisinesByRestaurantId(restaurant.getId());
                 restaurant.setCuisines(cuisines);
 
                 restaurants.add(restaurant);
-
             }
         } catch (Exception e) {
             log.warn("Error encountered when trying to get a Restaurant by Public Id", e);
@@ -295,7 +365,7 @@ public class MysqlConnection {
             statement.setInt(6, restaurant.getZipCode());
             statement.setInt(7, restaurant.getClickCount());
             statement.setInt(8, restaurant.getSearchCount());
-            statement.setString(9, Pricing.ONE_STAR.toString());
+            statement.setString(9, restaurant.getPricing().getSimpleName());
             statement.executeUpdate();
 
 
@@ -308,7 +378,7 @@ public class MysqlConnection {
             statement.setInt(5, restaurant.getZipCode());
             statement.setInt(6, restaurant.getClickCount());
             statement.setInt(7, restaurant.getSearchCount());
-            statement.setString(8, Pricing.ONE_STAR.toString());
+            statement.setString(8, restaurant.getPricing().getSimpleName());
             statement.setString(9, restaurant.getPublicId());
             statement.executeUpdate();
 
