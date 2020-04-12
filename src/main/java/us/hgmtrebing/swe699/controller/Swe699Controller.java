@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import us.hgmtrebing.swe699.database.MysqlConnection;
+import us.hgmtrebing.swe699.model.Pricing;
 import us.hgmtrebing.swe699.model.Restaurant;
 import us.hgmtrebing.swe699.search.RestaurantBrowseRequest;
 import us.hgmtrebing.swe699.search.RestaurantSearchEngine;
@@ -51,6 +52,7 @@ public class Swe699Controller {
         // connection.disconnect();
 
         model.addAttribute("cuisines", cuisines);
+        model.addAttribute("pricings", Pricing.values());
         return "browse";
     }
 

@@ -10,11 +10,33 @@
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js" integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous"></script>
 
     <link rel="stylesheet" href="index.css" type="text/css">
+    <link rel="shortcut icon" href="/order-out.png">
 </head>
 <body>
+<nav class="navbar navbar-expand-md navbar-dark bg-dark">
+    <a class="navbar-brand" href="#">
+        <img src="order-out.png" width="30" height="30" class="d-inline-block align-top"
+             alt="Order out log">
+        Order Out!
+    </a>
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav"
+            aria-controls="navbarNav" aria-expanded="true" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+    </button>  <div class="collapse navbar-collapse" id="navbarNav">
+    <ul class="navbar-nav ml-auto">
+        <li class="nav-item active">
+            <a class="nav-link" href="http://ec2-54-198-54-151.compute-1.amazonaws.com:8080/">Search</a>
+        </li>
+        <li class="nav-item active">
+            <a class="nav-link" href="http://3.88.210.26:8080/RestaurantManager-0.0.1/">Manager</a>
+        </li>
+    </ul>
+</div>
+</nav>
+
     <div class="container-md">
-        <h1 id="search-page-main-title">Welcome to Order Out!</h1>
-        <h2>Let us help you search for your next meal!</h2>
+        <h1 class="text-center" id="search-page-main-title">Welcome to Order Out!</h1>
+        <h2 class="text-center">Let us help you search for your next meal!</h2>
 
 
         <form class="form" action="/restaurant_search">
