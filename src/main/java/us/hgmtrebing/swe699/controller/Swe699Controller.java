@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import us.hgmtrebing.swe699.database.MysqlConnection;
+import us.hgmtrebing.swe699.model.Cuisine;
 import us.hgmtrebing.swe699.model.Pricing;
 import us.hgmtrebing.swe699.model.Restaurant;
 import us.hgmtrebing.swe699.search.RestaurantBrowseRequest;
@@ -57,15 +58,26 @@ public class Swe699Controller {
     }
 
     @RequestMapping("/restaurant_browse")
-    private String restaurantBrowse(@RequestParam("cuisine") String cuisineList,
+    private String restaurantBrowse(@RequestParam(value = "cuisine", defaultValue = "") String cuisineList,
+                                    @RequestParam(value = "pricing", defaultValue = "") String pricingList,
                                     Model model) {
         RestaurantBrowseRequest browseRequest = new RestaurantBrowseRequest();
-
         MysqlConnection mysqlConnection = new MysqlConnection();
         mysqlConnection.connect();
         String[] cuisines = cuisineList.split(",");
         for (String cuisine : cuisines) {
-            browseRequest.addCuisine(mysqlConnection.getCuisineByName(cuisine));
+            Cuisine c = mysqlConnection.getCuisineByName(cuisine);
+            if (c != null && c.getName() != null && !c.getName().equals("null")) {
+                browseRequest.addCuisine(c);
+            }
+        }
+
+        String[] prices = pricingList.split(",");
+        for (String price : prices) {
+            Pricing pricing = Pricing.parseFromString(price);
+            if (pricing != null) {
+                browseRequest.addPricing(pricing);
+            }
         }
 
         RestaurantSearchEngine engine = new RestaurantSearchEngine(this.connection);

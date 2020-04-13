@@ -2,6 +2,7 @@ package us.hgmtrebing.swe699.search;
 
 import us.hgmtrebing.swe699.database.MysqlConnection;
 import us.hgmtrebing.swe699.model.Cuisine;
+import us.hgmtrebing.swe699.model.Pricing;
 import us.hgmtrebing.swe699.model.Restaurant;
 
 import java.util.ArrayList;
@@ -42,15 +43,32 @@ public class RestaurantSearchEngine {
 
     public RestaurantSearchResults getBrowseResults(RestaurantBrowseRequest request) {
 
+        Set<Pricing> pricings = request.getAllPricings();
+        Set<Cuisine> cuisines = request.getAllCuisines();
         RestaurantSearchResults results = new RestaurantSearchResults();
-        for (Cuisine cuisine : request.getAllCuisines()) {
-            this.connection.connect();
-            Set<Restaurant> restaurants= this.connection.getRestaurantsByCuisineId(cuisine.getId());
-            this.connection.closeConnection();
-            for (Restaurant restaurant : restaurants) {
-                results.addSearchResult(restaurant);
+
+        if (cuisines.size() > 0) {
+            for (Cuisine cuisine : request.getAllCuisines()) {
+                this.connection.connect();
+                Set<Restaurant> restaurants = this.connection.getRestaurantsByCuisineId(cuisine.getId());
+                this.connection.closeConnection();
+                for (Restaurant restaurant : restaurants) {
+                    if (pricings.contains(restaurant.getPricing()) || pricings.size() < 1) {
+                        results.addSearchResult(restaurant);
+                    }
+                }
+            }
+        } else if (pricings.size() > 0) {
+            for (Pricing pricing : pricings) {
+                this.connection.connect();
+                Set<Restaurant> restaurants= this.connection.getAllRestaurantsByPricing(pricing);
+                this.connection.closeConnection();
+                for (Restaurant restaurant : restaurants) {
+                    results.addSearchResult(restaurant);
+                }
             }
         }
+
 
         if (results.getNumberOfSearchResults() < 1) {
             results = getDefaultResults(null);

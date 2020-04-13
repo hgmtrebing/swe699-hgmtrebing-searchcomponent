@@ -241,6 +241,33 @@ public class MysqlConnection {
         }
     }
 
+    public Set<Restaurant> getAllRestaurantsByPricing (Pricing pricing) {
+        String query = "SELECT * FROM " + Restaurant.restaurantTableName + " WHERE " + Restaurant.restaurantPricingName + "=?";
+        Set<Restaurant> restaurants = new HashSet<>();
+        try {
+            PreparedStatement statement = this.connection.prepareStatement(query);
+            statement.setString(1, pricing.getSimpleName());
+            ResultSet set = statement.executeQuery();
+            while (set.next()) {
+                Restaurant restaurant = new Restaurant();
+                restaurant.setId(set.getInt(Restaurant.restaurantIdName));
+                restaurant.setPublicId(set.getString(Restaurant.restaurantPublicIdName));
+                restaurant.setName(set.getString(Restaurant.restaurantNameName));
+                restaurant.setStreetAddress(set.getString(Restaurant.restaurantStreetAddressName));
+                restaurant.setCity(set.getString(Restaurant.restaurantCityName));
+                restaurant.setState(set.getString(Restaurant.restaurantStateName));
+                restaurant.setZipCode(set.getInt(Restaurant.restaurantZipcodeName));
+                restaurant.setClickCount(set.getInt(Restaurant.restaurantClickCountName));
+                restaurant.setSearchCount(set.getInt(Restaurant.restaurantSearchCountName));
+                restaurant.setPricing(Pricing.parseFromString(set.getString(Restaurant.restaurantPricingName)));
+                restaurants.add(restaurant);
+            }
+        } catch (Exception e) {
+            log.error("Exception encountered when trying to retrieve Restaurants by Pricing! ", e);
+        }
+        return restaurants;
+    }
+
     public Restaurant getRestaurantByPublicId(String publicId) {
         String query = "SELECT * FROM " + Restaurant.restaurantTableName + " WHERE " + Restaurant.restaurantPublicIdName + "=?";
         Restaurant restaurant = null;
