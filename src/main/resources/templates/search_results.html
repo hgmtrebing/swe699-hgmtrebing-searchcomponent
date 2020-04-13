@@ -34,7 +34,7 @@
 </nav>
 
     <div class="container-lg mt-5">
-        <h1 class="text-center" th:if="${results.restaurantSearchResultsType.name() == 'SUCCESSFUL_SEARCH_RESULTS'}">Matches found! Here are the esults for your search: </h1>
+        <h1 class="text-center" th:if="${results.restaurantSearchResultsType.name() == 'SUCCESSFUL_SEARCH_RESULTS'}">Matches found! Here are the Results for your search: </h1>
         <h1 class="text-center" th:if="${results.restaurantSearchResultsType.name() == 'FAILED_SEARCH_RESULTS'}">We could not find anything for your search request. Here are some popular restaurants near your location.</h1>
         <div class="list-group">
             <a th:each="result: ${results}" class="list-group-item" th:href="@{http://ec2-52-90-195-154.compute-1.amazonaws.com:8080/order(id=${result.publicId})}">

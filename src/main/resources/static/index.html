@@ -39,20 +39,33 @@
         <h2 class="text-center">Let us help you search for your next meal!</h2>
 
 
-        <form class="form" action="/restaurant_search">
+        <form id="restaurant-search" class="form" action="/restaurant_search">
             <div class="form-group mt-5 row">
                 <div class="col-2">
                     <label for="restaurant-text-search">Hungry? Get started here:</label>
                 </div>
-                <div class="col-9">
+                <div class="col-10">
                     <input id="restaurant-text-search" name="text-search" class="form-control form-control-lg" type="text" placeholder="Search for Restaurants">
                 </div>
+                <!--
                 <div class="col-1">
                     <button type="submit" class="btn btn-primary form-control">Go!</button>
                 </div>
+               -->
             </div>
         </form>
 
+        <form id="advanced-search" class="form" action="/advanced_search">
+        </form>
+        <form id="browse" class="form" action="/browse">
+        </form>
+
+        <div class="btn-group d-flex justify-content-center mt-5">
+            <button form="restaurant-search" formtarget="_self" formmethod="get" formaction="/restaurant_search" type="submit" class="btn btn-primary form-control-lg">Go!</button>
+            <button id="advanced-search-button" form="advanced-search" formtarget="_self" formmethod="get" formaction="/advanced_search" type="submit" class="btn btn-primary form-control-lg">Or, try the Advanced Search</button>
+            <button id="browse-button" form="browse" formtarget="_self" formmethod="get" formaction="/browse" type="submit" class="btn btn-primary form-control-lg">Or, just try Browsing</button>
+        </div>
+        <!--
         <div class="row">
         <form class="form" action="/advanced_search">
             <button id="advanced-search-button" type="submit" class="btn btn-success form-control-lg">Or, try the Advanced Search</button>
@@ -61,6 +74,7 @@
             <button id="browse-button" type="submit" class="btn btn-warning form-control-lg">Or, just try Browsing</button>
         </form>
         </div>
+        -->
     </div>
 </body>
 </html>
